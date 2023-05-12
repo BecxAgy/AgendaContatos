@@ -1,5 +1,6 @@
 ﻿using Contato.Data;
 using Contato.Models;
+using Contato.Repositories.Interfaces;
 using Contato.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -8,11 +9,11 @@ namespace Contato.Controllers
 {
     public class ContatoController : Controller
     {
-        private readonly AppDbContext _context;
-
-        public ContatoController(AppDbContext context)
+        private readonly IContatoRepository _contatoRepository; //aqui eu to chamando o repositorio e criando a variavel 
+        public ContatoController(IContatoRepository _contatoRepository)
         {
-            this._context = context;    
+            this._contatoRepository =  
+                _contatoRepository;
         }
 
         public IActionResult Index()
@@ -24,10 +25,11 @@ namespace Contato.Controllers
         public IActionResult List()
         {
             //pegar a lista de contatos do banco e retornar para a view
-            var lista = _context.Contatos;
+            var lista = _contatoRepository.GetContatos;
 
-            ContatoViewModel VM = new ContatoViewModel { //instanciar a view 
-            ListaContatos = lista
+            ContatoViewModel VM = new ContatoViewModel
+            { //instanciar a view 
+               // ListaContatos = lista
             };
 
             return View(VM);
@@ -84,10 +86,38 @@ namespace Contato.Controllers
                 contatoVelho.Name = contatoEditado.Name;
                 contatoVelho.Email = contatoEditado.Email;
                 contatoVelho.Phone = contatoEditado.Phone;
+                contatoVelho.imageUser = contatoEditado.imageUser;
 
                 _context.SaveChanges();
             }
             //update
+            return RedirectToAction("List");
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if(id==null) return NotFound(); 
+            //Verifico se esse id existe no banco 
+            var contatoExiste = _context.Contatos.FirstOrDefault(contato => contato.Id == id);
+
+            //se existe eu retorno a view 
+            if (contatoExiste != null) return View();
+           
+
+            //se nao existir eu retorno a view list
+            return NotFound();
+
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var acharContato = _context.Contatos.FirstOrDefault(contato => contato.Id == id);
+
+            _context.Contatos.Remove(acharContato);
+
+            _context.SaveChanges(); 
+
             return RedirectToAction("List");
         }
 

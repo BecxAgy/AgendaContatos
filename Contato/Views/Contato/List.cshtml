@@ -7,7 +7,7 @@
         {
             <div class="col-lg-4 col-md-5 col-sm-8">
                    <div class="card" style="width: 18rem;">
-                <img src="~/img/otherFem.jpg" class="card-img-top" alt="...">
+                <img src=@Contato.imageUser class="card-img-top" alt="...">
                   <div class="card-body">
                     <h5 class="card-title">@Contato.Name</h5>
                   </div>
@@ -19,7 +19,7 @@
                     <a asp-action="Edit" asp-route-id="@Contato.Id" class="card-link">
                         <i class="fa-solid fa-wrench" style="color: #000000;"></i>
                      </a>
-                    <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="card-link"><i class="fa-solid fa-trash" style="color: #f70808 !important;"></i></a>
+                    <a asp-action="Delete" asp-route-id="@Contato.Id" class="card-link"><i class="fa-solid fa-trash" style="color: #f70808 !important;"></i></a>
                   </div>
                 </div>
             </div>
