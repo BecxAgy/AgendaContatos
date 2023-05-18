@@ -6,9 +6,7 @@ namespace Contato.ViewModels
     {
         public IEnumerable<ContatoModel> ListaContatos { get; set; }
 
-        public static implicit operator ContatoViewModel(ContatoViewModel v)
-        {
-            throw new NotImplementedException();
-        }
+      
+
     }
 }

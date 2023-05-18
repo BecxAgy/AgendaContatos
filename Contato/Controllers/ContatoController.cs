@@ -25,11 +25,11 @@ namespace Contato.Controllers
         public IActionResult List()
         {
             //pegar a lista de contatos do banco e retornar para a view
-            var lista = _contatoRepository.GetContatos;
+            var lista = _contatoRepository.GetContatos();
 
             ContatoViewModel VM = new ContatoViewModel
             { //instanciar a view 
-               // ListaContatos = lista
+               ListaContatos = lista
             };
 
             return View(VM);
@@ -41,16 +41,13 @@ namespace Contato.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ContatoModel contato)
+        public async Task <ActionResult> Create(ContatoModel contato)
         {
             //verifico se esse modelo esta valido
             if (ModelState.IsValid)
             {
                 //Adiciono o contato no banco de dados 
-                _context.Contatos.Add(contato);
-
-                _context.SaveChanges();
-
+                await _contatoRepository.Add(contato);
                 //redireciona para a view 
                 return RedirectToAction("List");
 
@@ -65,7 +62,7 @@ namespace Contato.Controllers
 
 
             //verificar se contato existe no banco
-            var entity = _context.Contatos.FirstOrDefault(x=> x.Id == id);
+            var entity = _contatoRepository.GetContatoById(id);
 
             if (entity == null) return NotFound();
 
@@ -74,7 +71,7 @@ namespace Contato.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, ContatoModel contatoEditado)
+        public async Task <IActionResult> Edit(int id, ContatoModel contatoEditado)
         {
             if(id != contatoEditado.Id) return NotFound();
 
@@ -82,23 +79,17 @@ namespace Contato.Controllers
             if(ModelState.IsValid)
             {
                 //voce precisa achar a contato que tem o id passado pelo parametro
-               var contatoVelho = _context.Contatos.FirstOrDefault(c => c.Id == id);  
-                contatoVelho.Name = contatoEditado.Name;
-                contatoVelho.Email = contatoEditado.Email;
-                contatoVelho.Phone = contatoEditado.Phone;
-                contatoVelho.imageUser = contatoEditado.imageUser;
-
-                _context.SaveChanges();
+                await _contatoRepository.Edit(contatoEditado);
             }
             //update
             return RedirectToAction("List");
         }
 
-        public IActionResult Delete(int? id)
+        public async Task <IActionResult> Delete(int? id)
         {
             if(id==null) return NotFound(); 
             //Verifico se esse id existe no banco 
-            var contatoExiste = _context.Contatos.FirstOrDefault(contato => contato.Id == id);
+            var contatoExiste = await _contatoRepository.GetContatoById(id);
 
             //se existe eu retorno a view 
             if (contatoExiste != null) return View();
@@ -110,13 +101,11 @@ namespace Contato.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task <IActionResult> Delete(int id)
         {
-            var acharContato = _context.Contatos.FirstOrDefault(contato => contato.Id == id);
+            var acharContato = await _contatoRepository.GetContatoById(id);
 
-            _context.Contatos.Remove(acharContato);
-
-            _context.SaveChanges(); 
+            await _contatoRepository.Delete(acharContato);
 
             return RedirectToAction("List");
         }

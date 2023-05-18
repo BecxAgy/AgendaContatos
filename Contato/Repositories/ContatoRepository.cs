@@ -15,39 +15,37 @@ namespace Contato.Repositories
             this._dbContext = _dbContext;   
         }
 
-        public void Add(ContatoModel contato)
+        public async Task Add(ContatoModel contato)
         {
             //Adiciono o contato no banco de dados 
             _dbContext.Contatos.Add(contato);
 
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Delete(ContatoModel contato)
+        public async Task Delete(ContatoModel contato)
         {
             _dbContext.Contatos.Remove(contato);
 
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Edit(ContatoModel contatoEditado, ContatoModel contatoVelho)
+        public async Task Edit(ContatoModel contatoEditado)
         {
-            contatoVelho.Name = contatoEditado.Name;
-            contatoVelho.Email = contatoEditado.Email;
-            contatoVelho.Phone = contatoEditado.Phone;
-            contatoVelho.imageUser = contatoEditado.imageUser;
+            _dbContext.Update(contatoEditado);
 
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync(); // o await é pra que eu espere que ele termine de executar 
         }
 
-        public ContatoModel GetContatoById(int id)
+        public async Task<ContatoModel> GetContatoById(int? id)
         {
-           return _dbContext.Contatos.FirstOrDefault(Contato =>  Contato.Id == id);
+           var cnt =  await  _dbContext.Contatos.FirstOrDefaultAsync(Contato =>  Contato.Id == id);
+            return cnt; 
         }
 
-        public IEnumerable<ContatoModel> GetContatos(ContatoModel contato)
+        public IEnumerable<ContatoModel> GetContatos()
         {
-            return _dbContext.Contatos; //retornar a tabela 
+            return _dbContext.Contatos.ToList(); //retornar a tabela 
         }
     }
 }

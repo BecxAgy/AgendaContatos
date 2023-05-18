@@ -6,16 +6,16 @@ namespace Contato.Repositories.Interfaces
     public interface IContatoRepository
     {
         //add
-        void Add(ContatoModel contato);
+        Task Add(ContatoModel contato);
         //assinatura tipo de retorno + nome do método +  (parametros?)
 
-        IEnumerable<ContatoModel> GetContatos(ContatoModel contato); //assinatura 
+        IEnumerable<ContatoModel> GetContatos(); //assinatura 
 
         //edit
-        void Edit(ContatoModel contato, ContatoModel contatoVelho);
+        Task Edit(ContatoModel contato);
 
-        void Delete(ContatoModel contato);
+        Task Delete(ContatoModel contato);
 
-        ContatoModel GetContatoById(int id);
+        Task<ContatoModel> GetContatoById(int? id);
     }
 }

@@ -1,4 +1,6 @@
 using Contato.Data;
+using Contato.Repositories;
+using Contato.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -8,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(op => op.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddTransient<IContatoRepository, ContatoRepository>();
 
 var app = builder.Build();
 
