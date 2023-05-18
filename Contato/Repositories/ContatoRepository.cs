@@ -39,13 +39,25 @@ namespace Contato.Repositories
 
         public async Task<ContatoModel> GetContatoById(int? id)
         {
-           var cnt =  await  _dbContext.Contatos.FirstOrDefaultAsync(Contato =>  Contato.Id == id);
-            return cnt; 
+           return await _dbContext.Contatos.FirstOrDefaultAsync(Contato =>  Contato.Id == id);
+           
         }
 
         public IEnumerable<ContatoModel> GetContatos()
         {
             return _dbContext.Contatos.ToList(); //retornar a tabela 
+        }
+
+        public async Task ToggleFavorite(ContatoModel contato)
+        {
+            if(contato.IsFavorite == true)
+            {
+                contato.IsFavorite = false;
+            }else
+            {
+                contato.IsFavorite = true;
+            }
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

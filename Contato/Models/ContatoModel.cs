@@ -8,6 +8,7 @@
         public string Phone { get; set; }   
         public string imageUser { get; set; }
 
+        public bool IsFavorite { get; set; }
        
     }
 }

@@ -17,5 +17,8 @@ namespace Contato.Repositories.Interfaces
         Task Delete(ContatoModel contato);
 
         Task<ContatoModel> GetContatoById(int? id);
+
+        Task ToggleFavorite (ContatoModel contato);
+        Task GetContatosById(int id);
     }
 }

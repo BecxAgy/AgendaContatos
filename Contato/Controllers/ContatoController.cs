@@ -55,14 +55,14 @@ namespace Contato.Controllers
             return View(contato);
         }
 
-        public IActionResult Edit(int? id)
+        public async Task <IActionResult> Edit(int? id)
         {
             //verificar de id é nulo
             if(id == null) return NotFound();
 
 
             //verificar se contato existe no banco
-            var entity = _contatoRepository.GetContatoById(id);
+            var entity = await _contatoRepository.GetContatoById(id);
 
             if (entity == null) return NotFound();
 
@@ -106,6 +106,16 @@ namespace Contato.Controllers
             var acharContato = await _contatoRepository.GetContatoById(id);
 
             await _contatoRepository.Delete(acharContato);
+
+            return RedirectToAction("List");
+        }
+
+        public async Task<IActionResult> ToggleFavorite(int id)
+        {
+            ContatoModel acharContato = await _contatoRepository.GetContatoById(id);
+
+            await _contatoRepository.ToggleFavorite(acharContato);
+
 
             return RedirectToAction("List");
         }
