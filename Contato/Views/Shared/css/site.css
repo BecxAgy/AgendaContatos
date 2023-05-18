@@ -19,6 +19,7 @@
     --card1-color: #4DA3FF;
     --card2-color: #FFE6AC;
     --card3-color: #E7D1FC;
+
     --tran-05: all 0.5s ease;
     --tran-03: all 0.3s ease;
     --tran-02: all 0.2s ease;
@@ -29,13 +30,6 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-nav {
+nav{
     background-color: var(--panel-color);
 }
- .favorite{
-
- }
-
- .not-favorite{
-
- }
