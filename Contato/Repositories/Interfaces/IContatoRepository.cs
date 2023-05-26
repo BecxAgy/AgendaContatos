@@ -19,6 +19,7 @@ namespace Contato.Repositories.Interfaces
         Task<ContatoModel> GetContatoById(int? id);
 
         Task ToggleFavorite (ContatoModel contato);
-        Task GetContatosById(int id);
+
+        IEnumerable<ContatoModel> GetFavorites ();
     }
 }

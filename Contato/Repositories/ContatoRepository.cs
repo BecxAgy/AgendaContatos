@@ -59,5 +59,10 @@ namespace Contato.Repositories
             }
             await _dbContext.SaveChangesAsync();
         }
+
+        public IEnumerable<ContatoModel> GetFavorites()
+        {
+            return _dbContext.Contatos.Where(c => c.IsFavorite); //encontrar no banco os favoritos 
+        }
     }
 }

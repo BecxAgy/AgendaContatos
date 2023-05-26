@@ -33,9 +33,6 @@ nav {
     background-color: var(--panel-color);
 }
  .favorite{
-
+     color: red;
  }
 
- .not-favorite{
-
- }

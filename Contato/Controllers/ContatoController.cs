@@ -34,7 +34,36 @@ namespace Contato.Controllers
 
             return View(VM);
         }    
-        
+
+        public IActionResult SwitchList(string tab)
+        {
+            var lista = _contatoRepository.GetContatos();
+
+            //qual a rota - é favorite?
+            if (tab.Equals("tab-favorites"))
+            {
+                lista = _contatoRepository.GetFavorites();
+            }
+
+            ContatoViewModel VM = new ContatoViewModel
+            { //instanciar a view 
+                ListaContatos = lista
+            };
+
+            return View("List",VM);
+
+        }
+        public IActionResult ListFavorites()
+        {
+            var lista = _contatoRepository.GetFavorites();
+
+            ContatoViewModel VM = new ContatoViewModel
+            {
+                ListaContatos = lista
+            };
+            return View(VM);
+        }
+
         public IActionResult Create() 
         {
             return View();
@@ -119,6 +148,10 @@ namespace Contato.Controllers
 
             return RedirectToAction("List");
         }
+
+
+
+        
 
         
        
